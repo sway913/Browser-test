@@ -161,14 +161,7 @@
   resolved "https://registry.yarnpkg.com/@canvas/image-data/-/image-data-1.0.0.tgz#3bd2cd856e13fc9e2c25feff360a4056857b0367"
   integrity sha512-BxOqI5LgsIQP1odU5KMwV9yoijleOPzHL18/YvNqF9KFSGF2K/DLlYAbDQsWqd/1nbaFuSkYD/191dpMtNh4vw==
 
-"@cliqz/adblocker-content@1.26.5":
-  version "1.26.5"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.26.5.tgz#b8ed6198a8d06737a2dcc82c367e78f53540bdd0"
-  integrity sha512-pcQ/Lpd0zvkxpOYx+38IQ7ZLWj38oF5tdsjm8Yq+hQ1jBu1Dwnk9LwIlYxpktidRvpMh4dGFOYUBmb4vsieEwQ==
-  dependencies:
-    "@cliqz/adblocker-extended-selectors" "^1.26.5"
-
-"@cliqz/adblocker-content@^1.26.5", "@cliqz/adblocker-content@^1.34.0":
+"@cliqz/adblocker-content@1.34.0", "@cliqz/adblocker-content@^1.26.5", "@cliqz/adblocker-content@^1.34.0":
   version "1.34.0"
   resolved "https://registry.yarnpkg.com/@cliqz/adblocker-content/-/adblocker-content-1.34.0.tgz#3a0347c1b4bcb8467f025464a5dc310af1e71668"
   integrity sha512-5LcV8UZv49RWwtpom9ve4TxJIFKd+bjT59tS/2Z2c22Qxx5CW1ncO/T+ybzk31z422XplQfd0ZE6gMGGKs3EMg==
