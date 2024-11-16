@@ -175,14 +175,7 @@
   dependencies:
     "@cliqz/adblocker-extended-selectors" "^1.34.0"
 
-"@cliqz/adblocker-electron-preload@1.26.5":
-  version "1.26.5"
-  resolved "https://registry.yarnpkg.com/@cliqz/adblocker-electron-preload/-/adblocker-electron-preload-1.26.5.tgz#5d3f028d4ee48be52449ac07342139fbfcb651b9"
-  integrity sha512-4XrfNyn493sUrXRpVW1Qg35SqNv7/BeaXPKVSbEUo9tEzNc5gDnLckWIb5uG204e0D6Xo+o6FUkvv1t8Smpv1g==
-  dependencies:
-    "@cliqz/adblocker-content" "^1.26.5"
-
-"@cliqz/adblocker-electron-preload@^1.26.5":
+"@cliqz/adblocker-electron-preload@1.34.0", "@cliqz/adblocker-electron-preload@^1.26.5":
   version "1.34.0"
   resolved "https://registry.yarnpkg.com/@cliqz/adblocker-electron-preload/-/adblocker-electron-preload-1.34.0.tgz#465f8e021b5f3f09ea94605458812d6744ca389b"
   integrity sha512-wi4FBGwlpJv8VQDTyiQJ2qLqdhtxzAEdEzBkOt9crrPP0meO1RUlhTMeZFFxNTogXFiK3W8VujTBixoGNEKscQ==
