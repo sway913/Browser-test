@@ -27,11 +27,7 @@ export class AppWindow {
       titleBarStyle: 'hiddenInset',
       backgroundColor: '#ffffff',
       webPreferences: {
-        plugins: true,
-        // TODO: enable sandbox, contextIsolation and disable nodeIntegration to improve security
-        nodeIntegration: true,
-        contextIsolation: false,
-        javascript: true,
+        preload: `${app.getAppPath()}/build/view-preload.bundle.js`,
       },
       trafficLightPosition: {
         x: 18,
@@ -43,7 +39,6 @@ export class AppWindow {
       ),
       show: false,
     });
-    require('@electron/remote/main').enable(this.win.webContents);
     this.incognito = incognito;
 
     this.viewManager = new ViewManager(this, incognito);
@@ -194,17 +189,6 @@ export class AppWindow {
       this.viewManager.fullscreen = false;
       this.send('html-fullscreen', false);
     });
-
-//    TODO:
-//    this.win.on('scroll-touch-begin', () => {
-//      this.send('scroll-touch-begin');
-//    });
-
-//    TODO:
-//    this.win.on('scroll-touch-end', () => {
-//      this.viewManager.selected.send('scroll-touch-end');
-//      this.send('scroll-touch-end');
-//    });
 
     this.win.on('focus', () => {
       Application.instance.windows.current = this;

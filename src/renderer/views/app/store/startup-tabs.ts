@@ -1,7 +1,6 @@
 import { makeObservable, observable } from 'mobx';
 
 import { Store } from '.';
-import * as remote from '@electron/remote';
 import { prefixHttp, isURL } from '~/utils';
 import { Database } from '~/models/database';
 import { IStartupTab } from '~/interfaces/startup-tab';
@@ -49,7 +48,7 @@ export class StartupTabsStore {
       this.clearStartupTabs(false, false);
     }
 
-    const args = remote.process.argv;
+    const args = '';
     let needsNewTabPage = false;
     // If we have tabs saved, load them
     if (tabsToLoad && tabsToLoad.length > 0) {
@@ -87,7 +86,7 @@ export class StartupTabsStore {
     // load up command line args. If there are any, we don't need a new tab page.
 
     if (args.length > 1 && this.store.windowId === 1) {
-      const path = remote.process.argv[1];
+      const path = '';
       const ext = extname(path);
 
       if (existsSync(path) && ext === '.html') {

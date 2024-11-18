@@ -45,13 +45,12 @@ export class PersistentDialog {
     this.webContentsView = new WebContentsView({
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: false,
+        contextIsolation: true,
         // @ts-ignore
         transparent: true,
         ...webPreferences,
       },
     });
-    require('@electron/remote/main').enable(this.webContentsView.webContents);
 
     this.bounds = { ...this.bounds, ...bounds };
     this.hideTimeout = hideTimeout;
@@ -191,8 +190,8 @@ export class PersistentDialog {
   public destroy() {
     if (this.browserWindow && this.webContentsView) {
       this.browserWindow.contentView.removeChildView(this.webContentsView);
-  
+
       this.webContentsView = null;
     }
-  }  
+  }
 }

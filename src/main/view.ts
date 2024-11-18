@@ -67,18 +67,6 @@ export class View {
     this.webContentsView = new WebContentsView({
       webPreferences: {
         preload: `${app.getAppPath()}/build/view-preload.bundle.js`,
-        nodeIntegration: false,
-        contextIsolation: true,
-        sandbox: true,
-        partition: incognito ? 'view_incognito' : 'persist:view',
-        plugins: true,
-        webSecurity: true,
-        javascript: true,
-        ...(!webset.autoplay
-          ? {
-              autoplayPolicy: 'user-gesture-required',
-            }
-          : undefined),
       },
     });
 

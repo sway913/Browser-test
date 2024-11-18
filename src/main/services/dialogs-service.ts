@@ -62,11 +62,10 @@ export class DialogsService {
     const view = new WebContentsView({
       webPreferences: {
         nodeIntegration: true,
-        contextIsolation: false,
+        contextIsolation: true,
         webviewTag: true,
       },
     });
-    require('@electron/remote/main').enable(view.webContents);
 
     view.webContents.loadURL(`about:blank`);
 

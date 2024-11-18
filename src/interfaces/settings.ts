@@ -15,7 +15,6 @@ export interface IStartupBehavior {
 export type TopBarVariant = 'default' | 'compact';
 
 export interface ISettings {
-  hardwareacceleration: boolean;
   invisibleTabs: any;
   theme: string;
   themeAuto: boolean;
