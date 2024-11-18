@@ -5,8 +5,7 @@ import { observer } from 'mobx-react-lite';
 import store from '../../store';
 import { Button } from '~/renderer/components/Button';
 import { ThemeProvider } from 'styled-components';
-import { OnStartup } from '../Startup';
-import { Content, LeftContent, Container } from '~/renderer/components/Pages';
+import { Container } from '~/renderer/components/Pages';
 import { WebUIStyle } from '~/renderer/mixins/default-styles';
 
 export const NormalButton = ({
@@ -32,8 +31,6 @@ export const NormalButton = ({
 };
 
 export default observer(() => {
-  const { selectedSection } = store;
-
   let dialogTitle = '';
 
   if (store.dialogContent === 'edit-search-engine') {
@@ -51,11 +48,6 @@ export default observer(() => {
         darken={store.dialogVisible}
       >
         <WebUIStyle />
-        <Content>
-          <LeftContent style={{ maxWidth: 800, marginTop: 56 }}>
-            {selectedSection === 'startup' && <OnStartup />}
-          </LeftContent>
-        </Content>
       </Container>
     </ThemeProvider>
   );

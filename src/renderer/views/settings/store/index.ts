@@ -3,15 +3,9 @@
 import { observable, computed, makeObservable } from 'mobx';
 import * as React from 'react';
 import { ISettings, ITheme, ISearchEngine } from '~/interfaces';
-import { StartupTabsStore } from './startup-tabs';
 import { getTheme } from '~/utils/themes';
 
-export type SettingsSection =
-  | 'startup'
-
 export class Store {
-  public startupTabs = new StartupTabsStore();
-
   public menuRef = React.createRef<HTMLDivElement>();
 
   public dialogRef = React.createRef<HTMLDivElement>();
@@ -45,8 +39,6 @@ export class Store {
     | 'edit-password'
     | 'privacy' = null;
 
-  public selectedSection: SettingsSection = 'startup';
-
   public settings: ISettings = { ...(window as any).settings };
 
   public editedSearchEngine: ISearchEngine = null;
@@ -66,7 +58,6 @@ export class Store {
       menuVisible: computed,
       dialogVisible: observable,
       dialogContent: observable,
-      selectedSection: observable,
       settings: observable,
       editedSearchEngine: observable,
       theme: computed,
