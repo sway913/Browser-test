@@ -26,24 +26,6 @@ const mainConfig = getConfig({
   },
 
   plugins: [
-    new CopyPlugin({
-      patterns: [
-        {
-          from: fileExists('node_modules/@cliqz/adblocker-electron-preload/dist/preload.cjs.js')
-            ? 'node_modules/@cliqz/adblocker-electron-preload/dist/preload.cjs.js'
-            : path.resolve(__dirname, 'src/preloads/adblocker-preload.ts'),
-          to: 'preload.js',
-          transform: async (fileContent) => {
-            // Transform only if the file exists
-            if (fileExists('node_modules/@cliqz/adblocker-electron-preload/dist/preload.cjs.js')) {
-              return (await terser.minify(fileContent.toString())).code;
-            }
-            console.warn('using a custom preload file for adblocking instead');
-            return fileContent.toString();
-          },
-        },
-      ],
-    }),
     // Add other plugins as needed
   ],
 
