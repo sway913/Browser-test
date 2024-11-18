@@ -3,8 +3,6 @@ import { BLUE_500 } from './colors';
 
 export const lightTheme: ITheme = {
   'titlebar.backgroundColor': '#e0e0e0', // Lightened titlebar color
-  'addressbar.backgroundColor': '#fff',
-  'addressbar.textColor': '#000',
   'toolbar.backgroundColor': '#f8f8f8',
   'toolbar.bottomLine.backgroundColor': 'rgba(0, 0, 0, 0.12)',
   'toolbar.lightForeground': false,
@@ -37,8 +35,6 @@ export const lightTheme: ITheme = {
 
 export const darkTheme: ITheme = {
   'titlebar.backgroundColor': '#232323',
-  'addressbar.backgroundColor': '#262626',
-  'addressbar.textColor': '#fff',
   'toolbar.backgroundColor': '#373737',
   'toolbar.bottomLine.backgroundColor': 'rgba(255, 255, 255, 0.08)',
   'toolbar.lightForeground': true,

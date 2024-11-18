@@ -4,7 +4,6 @@
   "name": "WidevineCdm",
   "description": "Widevine Content Decryption Module",
   "version": "4.10.2710.0",
-  "minimum_chrome_version": "68.0.3430.0",
   "x-cdm-module-versions": "4",
   "x-cdm-interface-versions": "10",
   "x-cdm-host-versions": "10",

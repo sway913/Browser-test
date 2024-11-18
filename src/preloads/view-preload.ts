@@ -1,11 +1,8 @@
 /* Copyright (c) 2021-2024 Damon Smith */
 
 import { app, ipcRenderer, webFrame } from 'electron';
-
-import AutoComplete from './models/auto-complete';
 import { getTheme } from '~/utils/themes';
 import { ERROR_PROTOCOL, WEBUI_BASE_URL } from '~/constants/files';
-import { injectChromeWebstoreInstallButton } from './chrome-webstore';
 import { contextBridge } from 'electron';
 const tabId = ipcRenderer.sendSync('get-webcontents-id');
 

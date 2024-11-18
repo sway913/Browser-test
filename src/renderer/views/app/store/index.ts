@@ -37,12 +37,6 @@ export class Store {
   public isIncognito = ipcRenderer.sendSync(`is-incognito-${this.windowId}`);
 
   // Observable
-  public addressbarTextVisible = true;
-
-  public addressbarFocused = false;
-
-  public addressbarEditing = false;
-
   public isAlwaysOnTop = false;
 
   public isFullscreen = false;
@@ -91,73 +85,8 @@ export class Store {
     return getTheme(this.settings.object.theme);
   }
 
-  public get addressbarValue() {
-    const tab = this.tabs.selectedTab;
-    if (tab?.addressbarValue != null) return tab?.addressbarValue;
-    else if (tab && !tab?.url?.startsWith(NEWTAB_URL))
-      return tab.url[tab.url.length - 1] === '/'
-        ? tab.url.slice(0, -1)
-        : tab.url;
-    return '';
-  }
-
-  public get addressbarUrlSegments() {
-    let capturedText = '';
-    let grayOutCaptured = false;
-    let hostnameCaptured = false;
-    let protocolCaptured = false;
-    const segments: IURLSegment[] = [];
-
-    const url = this.addressbarValue;
-
-    const whitelistedProtocols = ['https', 'http', 'ftp', 'ironiumstudios'];
-
-    for (let i = 0; i < url.length; i++) {
-      const protocol = whitelistedProtocols.find(
-        (x) => `${x}:/` === capturedText,
-      );
-      if (url[i] === '/' && protocol && !protocolCaptured) {
-        segments.push({
-          value: `${protocol}://`,
-          grayOut: true,
-        });
-
-        protocolCaptured = true;
-        capturedText = '';
-      } else if (
-        url[i] === '/' &&
-        !hostnameCaptured &&
-        (protocolCaptured ||
-          !whitelistedProtocols.find((x) => `${x}:` === capturedText))
-      ) {
-        segments.push({
-          value: capturedText,
-          grayOut: false,
-        });
-
-        hostnameCaptured = true;
-        capturedText = url[i];
-        grayOutCaptured = true;
-      } else {
-        capturedText += url[i];
-      }
-
-      if (i === url.length - 1) {
-        segments.push({
-          value: capturedText,
-          grayOut: grayOutCaptured,
-        });
-      }
-    }
-
-    return segments;
-  }
-
   public constructor() {
     makeObservable(this, {
-      addressbarTextVisible: observable,
-      addressbarFocused: observable,
-      addressbarEditing: observable,
       isAlwaysOnTop: observable,
       isFullscreen: observable,
       isHTMLFullscreen: observable,
@@ -169,8 +98,6 @@ export class Store {
       isBookmarked: observable,
       zoomFactor: observable,
       dialogsVisibility: observable,
-      addressbarUrlSegments: computed,
-      addressbarValue: computed,
       theme: computed,
       isCompact: computed,
       downloadProgress: computed,

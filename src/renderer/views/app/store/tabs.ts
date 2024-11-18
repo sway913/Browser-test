@@ -18,7 +18,7 @@ import store from '.';
 import { ipcRenderer } from 'electron';
 import { defaultTabOptions } from '~/constants/tabs';
 import { TOOLBAR_HEIGHT } from '~/constants/design';
-import { TabEvent } from '~/interfaces/tabs';
+import { TabEvent, TabCreateProperties } from '~/interfaces/tabs';
 
 export class TabsStore {
   public isDragging = false;
@@ -79,7 +79,7 @@ export class TabsStore {
       'create-tab',
       (
         e,
-        options: chrome.tabs.CreateProperties,
+        options: TabCreateProperties,
         isNext: boolean,
         id: number,
       ) => {
@@ -147,10 +147,6 @@ export class TabsStore {
         if (event === 'url-updated') {
           const [url] = args;
           tab.url = url;
-
-          if (tab.id === this.selectedTabId && !store.addressbarFocused) {
-            this.selectedTab.addressbarValue = null;
-          }
         }
 
         if (event === 'load-commit') {
@@ -199,7 +195,7 @@ export class TabsStore {
   }
 
   @action public createTab(
-    options: chrome.tabs.CreateProperties,
+    options: TabCreateProperties,
     id: number,
     tabGroupId = -1,
   ) {
@@ -224,7 +220,7 @@ export class TabsStore {
   }
 
   @action public createTabs(
-    options: chrome.tabs.CreateProperties[],
+    options: TabCreateProperties[],
     ids: number[],
   ) {
     this.removedTabs = 0;
@@ -285,7 +281,7 @@ export class TabsStore {
   }
 
   @action
-  public async addTabs(options: chrome.tabs.CreateProperties[]) {
+  public async addTabs(options: TabCreateProperties[]) {
     ipcRenderer.send(`hide-window-${store.windowId}`);
 
     for (let i = 0; i < options.length; i++) {

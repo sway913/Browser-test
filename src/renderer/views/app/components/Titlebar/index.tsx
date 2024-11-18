@@ -17,9 +17,7 @@ const onMinimizeClick = () =>
   ipcRenderer.send(`window-minimize-${store.windowId}`);
 
 const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
-  if (store.addressbarFocused) {
-    e.preventDefault();
-  }
+
 };
 
 // currently in the process of fixing fullscreen as it dosent work at all

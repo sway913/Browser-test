@@ -3,6 +3,7 @@
 import { session, ipcMain } from 'electron';
 import { Application } from './application';
 import { registerProtocol } from './models/protocol';
+import { TabCreateProperties } from "~/interfaces/tabs"
 import { URL } from 'url';
 
 const rimraf = require('rimraf');
@@ -98,7 +99,7 @@ export class SessionsService {
 
   }
 
-  public onCreateTab = async (details: chrome.tabs.CreateProperties) => {
+  public onCreateTab = async (details: TabCreateProperties) => {
     const view = Application.instance.windows.list
       .find((x) => x.win.id === details.windowId)
       .viewManager.create(details, false, true);
