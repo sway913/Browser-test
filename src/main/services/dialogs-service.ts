@@ -66,7 +66,6 @@ export class DialogsService {
         webviewTag: true,
       },
     });
-    require('@electron/remote/main').enable(view.webContents);
 
     view.webContents.loadURL(`about:blank`);
 

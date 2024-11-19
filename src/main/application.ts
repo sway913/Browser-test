@@ -11,7 +11,6 @@ import { WindowsService } from './windows-service';
 import { StorageService } from './services/storage';
 import { runAutoUpdaterService } from './services';
 import { DialogsService } from './services/dialogs-service';
-import { NetworkServiceHandler } from './network/network-service-handler';
 
 export class Application {
   public static instance = new Application();
@@ -114,8 +113,6 @@ export class Application {
 
   private async onReady() {
     await app.whenReady();
-
-    NetworkServiceHandler.get();
 
     checkFiles();
 

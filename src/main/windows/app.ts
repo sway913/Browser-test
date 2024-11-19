@@ -1,6 +1,6 @@
 /* Copyright (c) 2021-2024 Damon Smith */
 
-import { BrowserWindow, app, dialog } from 'electron';
+import { BrowserWindow, app, dialog, ipcMain } from 'electron';
 import { writeFileSync, promises } from 'fs';
 import { resolve, join } from 'path';
 
@@ -43,7 +43,6 @@ export class AppWindow {
       ),
       show: false,
     });
-    require('@electron/remote/main').enable(this.win.webContents);
     this.incognito = incognito;
 
     this.viewManager = new ViewManager(this, incognito);
@@ -109,6 +108,10 @@ export class AppWindow {
 
       this.webContents.send('tabs-resize');
     };
+
+    ipcMain.on('get-current-window-id', (e) => {
+      e.returnValue = this.win.id;
+    });
 
     this.win.on('maximize', resize);
     this.win.on('restore', resize);
@@ -194,17 +197,6 @@ export class AppWindow {
       this.viewManager.fullscreen = false;
       this.send('html-fullscreen', false);
     });
-
-//    TODO:
-//    this.win.on('scroll-touch-begin', () => {
-//      this.send('scroll-touch-begin');
-//    });
-
-//    TODO:
-//    this.win.on('scroll-touch-end', () => {
-//      this.viewManager.selected.send('scroll-touch-end');
-//      this.send('scroll-touch-end');
-//    });
 
     this.win.on('focus', () => {
       Application.instance.windows.current = this;

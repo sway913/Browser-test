@@ -1,23 +1,15 @@
-/* Copyright (c) 2021-2024 Damon Smith */
+const { ipcRenderer } = require("electron")
 
-import * as remote from '@electron/remote';
-
-export const getCurrentWindow = () => remote.getCurrentWindow();
+export const getCurrentWindowId: number = ipcRenderer.sendSync('get-current-window-id');
 
 export const closeWindow = () => {
-  getCurrentWindow().close();
-};
+  ipcRenderer.send('close');
+}
 
 export const minimizeWindow = () => {
-  getCurrentWindow().minimize();
-};
+  ipcRenderer.send('unmaximize');
+}
 
 export const maximizeWindow = () => {
-  const currentWindow = getCurrentWindow();
-
-  if (currentWindow.isMaximized()) {
-    currentWindow.unmaximize();
-  } else {
-    currentWindow.maximize();
-  }
-};
+  ipcRenderer.send('maximize');
+}

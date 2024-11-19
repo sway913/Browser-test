@@ -13,7 +13,6 @@ import {
   IUpdateOperation,
 } from '~/interfaces';
 import { promises } from 'fs';
-import { requestURL } from '../network/request';
 import * as parse from 'node-parse-bookmarks';
 import { Settings } from '../models/settings';
 
@@ -191,44 +190,6 @@ export class StorageService {
   };
 
   public addFavicon = async (url: string): Promise<string> => {
-    try {
-      if (!this.favicons.get(url)) {
-        const res = await requestURL(url);
-
-        if (res.statusCode === 404) {
-          throw new Error('404 favicon not found');
-        }
-
-        let data = Buffer.from(res.data, 'binary');
-
-        const type = await fileTypeFromBuffer(data);
-
-        if (type && type.ext === 'ico') {
-          data = Buffer.from(new Uint8Array(await convertIcoToPng(data)));
-        }
-
-        const str = `data:${
-          (await fileTypeFromBuffer(data))?.ext
-        };base64,${data.toString('base64')}`;
-
-        await this.insert({
-          scope: 'favicons',
-          item: {
-            url,
-            data: str,
-          },
-        });
-
-        this.favicons.set(url, str);
-
-        return str;
-      } else {
-        return this.favicons.get(url);
-      }
-    } catch (err) {
-      console.error(err);
-      return undefined;
-    }
   };
 
   private createBookmarkArray = (

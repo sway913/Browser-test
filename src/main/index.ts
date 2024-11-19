@@ -1,18 +1,6 @@
 /* Copyright (c) 2021-2024 Damon Smith */
 
 import { ipcMain, app, crashReporter, webContents } from 'electron';
-import { setIpcMain } from '@ironiumstudios/rpc-electron';
-setIpcMain(ipcMain);
-
-console.log(app.getPath('crashDumps'))
-crashReporter.start({ submitURL: '', uploadToServer: false })
-
-require('@electron/remote/main').initialize();
-
-if (process.env.NODE_ENV === 'development') {
-  require('source-map-support').install();
-}
-
 import { platform } from 'os';
 import { Application } from './application';
 
@@ -63,6 +51,9 @@ const application = Application.instance;
 (async () => {
   await application.start();
 })();
+
+console.log(app.getPath('crashDumps'))
+crashReporter.start({ submitURL: '', uploadToServer: false })
 
 process.on('uncaughtException', (error) => {
   console.error(error);

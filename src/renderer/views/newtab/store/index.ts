@@ -2,7 +2,6 @@ import { observable, computed, makeObservable } from 'mobx';
 import { ISettings, ITheme } from '~/interfaces';
 import { getTheme } from '~/utils/themes';
 import { INewsItem } from '~/interfaces/news-item';
-import { networkMainChannel } from '~/common/rpc/network';
 
 type NewsBehavior = 'on-scroll' | 'always-visible' | 'hidden';
 export type Preset = 'focused' | 'inspirational' | 'informational' | 'custom';
@@ -223,18 +222,6 @@ export class Store {
   }
 
   public async loadNews() {
-    try {
-      const { data } = await networkMainChannel.getInvoker().request(''); // ?lang=
-      const json = JSON.parse(data);
-
-      if (json.articles) {
-        this.news = this.news.concat(json.articles);
-      } else {
-        throw new Error('Error fetching news');
-      }
-    } catch (e) {
-      throw e;
-    }
   }
 
   public async loadTopSites() {

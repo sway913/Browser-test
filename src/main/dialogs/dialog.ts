@@ -51,7 +51,6 @@ export class PersistentDialog {
         ...webPreferences,
       },
     });
-    require('@electron/remote/main').enable(this.webContentsView.webContents);
 
     this.bounds = { ...this.bounds, ...bounds };
     this.hideTimeout = hideTimeout;
@@ -191,8 +190,8 @@ export class PersistentDialog {
   public destroy() {
     if (this.browserWindow && this.webContentsView) {
       this.browserWindow.contentView.removeChildView(this.webContentsView);
-  
+
       this.webContentsView = null;
     }
-  }  
+  }
 }

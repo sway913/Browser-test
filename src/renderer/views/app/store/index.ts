@@ -7,11 +7,9 @@ import { TabGroupsStore } from './tab-groups';
 import { AddTabStore } from './add-tab';
 import { ipcRenderer } from 'electron';
 import { SettingsStore } from './settings';
-import { getCurrentWindow } from '../utils/windows';
+import { getCurrentWindowId } from '../utils/windows';
 import { StartupTabsStore } from './startup-tabs';
 import { getTheme } from '~/utils/themes';
-import { NEWTAB_URL } from '~/constants/tabs';
-import { IURLSegment } from '~/interfaces/urls';
 import { NETWORK_ERROR_HOST, WEBUI_BASE_URL } from '~/constants/files';
 
 export class Store {
@@ -30,7 +28,7 @@ export class Store {
     y: 0,
   };
 
-  public windowId = getCurrentWindow().id;
+  public windowId = getCurrentWindowId;
 
   public barHideTimer = 0;
 
