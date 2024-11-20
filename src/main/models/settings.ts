@@ -2,7 +2,7 @@
 
 import { ipcMain, nativeTheme, dialog, app } from 'electron';
 
-import { DEFAULT_SETTINGS, DEFAULT_SEARCH_ENGINES } from '~/constants';
+import { DEFAULT_SETTINGS } from '~/constants';
 
 import { promises } from 'fs';
 
@@ -115,10 +115,6 @@ export class Settings extends EventEmitter {
           query: {},
           multi: true,
         });
-      }
-
-      if (typeof json.version === 'string' || json.version === 1) {
-        json.searchEngines = DEFAULT_SEARCH_ENGINES;
       }
 
       if (json.themeAuto === undefined) {

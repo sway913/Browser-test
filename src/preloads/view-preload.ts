@@ -126,31 +126,10 @@ if (
         'errorURL',
         await ipcRenderer.invoke(`get-error-url-${tabId}`),
       );
-    } else if (hostname.startsWith('history')) {
-      contextBridge.exposeInMainWorld('getHistory', async () => {
-        return await ipcRenderer.invoke(`history-get`);
-      });
-      contextBridge.exposeInMainWorld('removeHistory', (ids: string[]) => {
-        ipcRenderer.send(`history-remove`, ids);
-      });
     } else if (hostname.startsWith('newtab')) {
       contextBridge.exposeInMainWorld('getTopSites', async (count: number) => {
         return await ipcRenderer.invoke(`topsites-get`, count);
       });
-    }
-  })();
-} else {
-  (async function () {
-    if (settings.doNotTrack) {
-      await webFrame.executeJavaScript(
-        `window.navigator.doNotTrack = { value: 1 }`,
-      );
-    }
-
-    if (settings.globalPrivacyControl) {
-      await webFrame.executeJavaScript(
-        `window.navigator.globalPrivacyControl = true`,
-      );
     }
   })();
 }
@@ -158,11 +137,6 @@ if (
 if (window.location.href.startsWith(WEBUI_BASE_URL)) {
   window.addEventListener('DOMContentLoaded', () => {
     if (hostname.startsWith('settings')) document.title = 'Settings';
-    else if (hostname.startsWith('history')) document.title = 'History';
-    else if (hostname.startsWith('bookmarks')) document.title = 'Bookmarks';
-    else if (hostname.startsWith('extensions')) document.title = 'Extensions';
-    else if (hostname.startsWith('welcome')) document.title = 'lunarwolf Setup';
-    else if (hostname.startsWith('changelog')) document.title = 'Updater';
     else if (hostname.startsWith('newtab')) document.title = 'New Tab';
   });
 

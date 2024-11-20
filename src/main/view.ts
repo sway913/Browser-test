@@ -74,11 +74,6 @@ export class View {
         plugins: true,
         webSecurity: true,
         javascript: true,
-        ...(!webset.autoplay
-          ? {
-              autoplayPolicy: 'user-gesture-required',
-            }
-          : undefined),
       },
     });
 

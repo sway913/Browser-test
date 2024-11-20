@@ -2,7 +2,7 @@
 
 import { observable, computed, makeObservable } from 'mobx';
 import * as React from 'react';
-import { ISettings, ITheme, ISearchEngine } from '~/interfaces';
+import { ISettings, ITheme } from '~/interfaces';
 import { getTheme } from '~/utils/themes';
 
 export class Store {
@@ -41,14 +41,8 @@ export class Store {
 
   public settings: ISettings = { ...(window as any).settings };
 
-  public editedSearchEngine: ISearchEngine = null;
-
   public get theme(): ITheme {
     return getTheme(this.settings.theme);
-  }
-
-  public get searchEngine() {
-    return this.settings.searchEngines[this.settings.searchEngine];
   }
 
   constructor() {
@@ -59,9 +53,7 @@ export class Store {
       dialogVisible: observable,
       dialogContent: observable,
       settings: observable,
-      editedSearchEngine: observable,
       theme: computed,
-      searchEngine: computed,
     });
 
     (window as any).updateSettings = (settings: ISettings) => {

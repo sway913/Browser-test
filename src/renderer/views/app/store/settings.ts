@@ -21,7 +21,6 @@ export class SettingsStore {
     makeObservable(this, {
       selectedSection: observable,
       object: observable,
-      searchEngine: computed,
       updateSettings: action,
     });
 
@@ -39,10 +38,6 @@ export class SettingsStore {
         firstTime = true;
       }
     });
-  }
-
-  public get searchEngine() {
-    return this.object.searchEngines[this.object.searchEngine];
   }
 
   public updateSettings(newSettings: ISettings) {

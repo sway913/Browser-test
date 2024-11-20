@@ -1,13 +1,3 @@
-/* Copyright (c) 2021-2024 Damon Smith */
-
-export interface ISearchEngine {
-  name?: string;
-  url?: string;
-  keywordsUrl?: string;
-  keyword?: string;
-  icon?: string;
-}
-
 export interface IStartupBehavior {
   type: 'continue' | 'urls' | 'empty';
 }
@@ -26,12 +16,10 @@ export interface ISettings {
   animations: boolean;
   bookmarksBar: boolean;
   suggestions: boolean;
-  searchEngine: number;
   newtab: {
     news: boolean;
     weather: boolean;
   };
-  searchEngines: ISearchEngine[];
   startupBehavior: IStartupBehavior;
   warnOnQuit: boolean;
   version: number;
