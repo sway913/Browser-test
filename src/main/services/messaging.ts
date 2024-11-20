@@ -4,7 +4,6 @@ import { ipcMain } from 'electron';
 
 import { AppWindow } from '../windows';
 import { Application } from '../application';
-import { PreviewDialog } from '../dialogs/preview';
 import { showTabGroupDialog } from '../dialogs/tabgroup';
 
 export const runMessagingService = (appWindow: AppWindow) => {
@@ -44,21 +43,6 @@ export const runMessagingService = (appWindow: AppWindow) => {
 
   ipcMain.handle(`is-dialog-visible-${id}`, (e, dialog) => {
     return Application.instance.dialogs.isVisible(dialog);
-  });
-
-  ipcMain.on(`show-tab-preview-${id}`, (e, tab) => {
-    const dialog = Application.instance.dialogs.getPersistent(
-      'preview',
-    ) as PreviewDialog;
-    dialog.tab = tab;
-    dialog.show(appWindow.win);
-  });
-
-  ipcMain.on(`hide-tab-preview-${id}`, (e, tab) => {
-    const dialog = Application.instance.dialogs.getPersistent(
-      'preview',
-    ) as PreviewDialog;
-    dialog.hide();
   });
 
   ipcMain.on(`find-show-${id}`, () => {

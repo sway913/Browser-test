@@ -332,16 +332,6 @@ export class View {
 
   public updateNavigationState() {
     if (this.webContentsView.webContents.isDestroyed()) return;
-
-    if (this.window.viewManager.selectedId === this.id) {
-      this.window.send('update-navigation-state', {
-        canGoBack: this.webContents.canGoBack(),
-        canGoForward: this.webContents.canGoForward(),
-      });
-      this.window.send('update-navigation-state-ui', {
-        url: this.webContents.getURL(),
-      });
-    }
   }
 
   public destroy() {

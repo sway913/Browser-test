@@ -38,19 +38,8 @@ const appConfig = getConfig(getBaseConfig('app'), {
   },
 });
 
-const extPopupConfig = getConfig({
-  target: 'web',
-
-  entry: {},
-  output: {},
-});
-
 applyEntries(appConfig, [
   'app',
-  'preview',
-  'tabgroup',
-  'settings',
-  'newtab',
 ]);
 
 module.exports = appConfig;
