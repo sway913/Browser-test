@@ -235,8 +235,6 @@ export class ITab {
 
     public async close() {
         store.tabs.closedUrl = this.url
-        store.tabs.canShowPreview = false
-        ipcRenderer.send(`hide-tab-preview-${store.windowId}`)
 
         const selected = store.tabs.selectedTabId === this.id
 

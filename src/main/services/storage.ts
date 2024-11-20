@@ -2,7 +2,6 @@
 
 import { ipcMain, dialog } from 'electron';
 import Nedb, * as Datastore from '@seald-io/nedb';
-import { fileTypeFromBuffer } from 'file-type';
 import * as icojs from 'parse-ico';
 
 import { getPath } from '~/utils'; // Import getPath function from utils module

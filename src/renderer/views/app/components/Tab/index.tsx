@@ -53,8 +53,6 @@ const onMouseDown = (tab: ITab) => (e: React.MouseEvent<HTMLDivElement>) => {
 
     store.tabs.lastScrollLeft = store.tabs.containerRef.current.scrollLeft;
   }
-
-  ipcRenderer.send(`hide-tab-preview-${store.windowId}`);
 };
 
 const onMouseEnter = (tab: ITab) => (e: React.MouseEvent<HTMLDivElement>) => {
@@ -66,20 +64,10 @@ const onMouseEnter = (tab: ITab) => (e: React.MouseEvent<HTMLDivElement>) => {
 
   const x = left + 8;
   const y = store.isCompact ? bottom - COMPACT_TAB_MARGIN_TOP : bottom;
-
-  if (store.tabs.canShowPreview && !store.tabs.isDragging) {
-    ipcRenderer.send(`show-tab-preview-${store.windowId}`, {
-      id: tab.id,
-      x,
-      y,
-    });
-  }
 };
 
 const onMouseLeave = () => {
   store.tabs.hoveredTabId = -1;
-  ipcRenderer.send(`hide-tab-preview-${store.windowId}`);
-  store.tabs.canShowPreview = true;
 };
 
 const onClick = (tab: ITab) => (e: React.MouseEvent<HTMLDivElement>) => {

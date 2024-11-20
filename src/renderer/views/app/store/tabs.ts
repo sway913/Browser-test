@@ -43,8 +43,6 @@ export class TabsStore {
 
   public closedUrl = '';
 
-  public canShowPreview = true;
-
   public containerRef = React.createRef<HTMLDivElement>();
 
   public leftMargins = 0;
