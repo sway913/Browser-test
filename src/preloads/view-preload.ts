@@ -126,10 +126,6 @@ if (
         'errorURL',
         await ipcRenderer.invoke(`get-error-url-${tabId}`),
       );
-    } else if (hostname.startsWith('newtab')) {
-      contextBridge.exposeInMainWorld('getTopSites', async (count: number) => {
-        return await ipcRenderer.invoke(`topsites-get`, count);
-      });
     }
   })();
 }
@@ -137,7 +133,6 @@ if (
 if (window.location.href.startsWith(WEBUI_BASE_URL)) {
   window.addEventListener('DOMContentLoaded', () => {
     if (hostname.startsWith('settings')) document.title = 'Settings';
-    else if (hostname.startsWith('newtab')) document.title = 'New Tab';
   });
 
   window.addEventListener('message', async ({ data }) => {

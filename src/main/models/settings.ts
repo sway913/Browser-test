@@ -41,19 +41,6 @@ export class Settings extends EventEmitter {
       e.sender.send('update-settings', this.object);
     });
 
-    ipcMain.on('downloads-path-change', async () => {
-      const { canceled, filePaths } = await dialog.showOpenDialog({
-        defaultPath: this.object.downloadsPath,
-        properties: ['openDirectory'],
-      });
-
-      if (canceled) return;
-
-      this.object.downloadsPath = filePaths[0];
-
-      await this.addToQueue();
-    });
-
     nativeTheme.on('updated', () => {
       this.update();
     });

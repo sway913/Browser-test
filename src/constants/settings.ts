@@ -7,14 +7,11 @@ export const DEFAULT_SETTINGS: ISettings = {
   shield: true,
   multrin: true,
   animations: true,
-  bookmarksBar: false,
-  suggestions: true,
   themeAuto: true,
   startupBehavior: {
     type: 'empty',
   },
   warnOnQuit: false,
   version: 2,
-  doNotTrack: true,
   topBarVariant: 'default',
 };
