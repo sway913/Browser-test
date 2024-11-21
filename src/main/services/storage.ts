@@ -2,7 +2,6 @@
 
 import { ipcMain, dialog } from 'electron';
 import Nedb, * as Datastore from '@seald-io/nedb';
-import * as icojs from 'parse-ico';
 
 import { getPath } from '~/utils'; // Import getPath function from utils module
 import {
@@ -19,23 +18,11 @@ interface Databases {
 [key: string]: Nedb;
 }
 
-const convertIcoToPng = async (icoData: Buffer): Promise<ArrayBuffer> => {
-  return (await icojs.parse(icoData, 'image/png'))[0].buffer;
-};
-
-const indentLength = 4;
-const indentType = ' ';
-
 export class StorageService {
   public settings: Settings;
 
   public databases: Databases = {
-    favicons: null,
-    bookmarks: null,
-    history: null,
-    formfill: null,
-    startupTabs: null,
-    permissions: null,
+
   };
 
   public favicons: Map<any, any> = new Map();
@@ -160,24 +147,6 @@ export class StorageService {
     for (const key in this.databases) {
       this.databases[key] = this.createDatabase(key.toLowerCase());
     }
-    await this.loadBookmarks();
-    await this.loadFavicons();
-    await this.loadHistory();
-  }
-
-  private async loadFavicons() {
-
-  }
-
-  private async loadHistory() {
-
-  }
-
-  private async loadBookmarks() {
-  }
-
-  public async removeBookmark(id: string) {
-
   }
 
   private createDatabase = (name: string) => {
@@ -188,19 +157,4 @@ export class StorageService {
     });
   };
 
-  public addFavicon = async (url: string): Promise<string> => {
-  };
-
-  private createBookmarkArray = (
-    parentFolderId: string = null,
-    first = true,
-    depth = 1,
-  ): string[] => {
-
-    return [''];
-  };
-
-  public exportBookmarks = async () => {
-
-  };
 }

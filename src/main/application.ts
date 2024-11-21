@@ -15,13 +15,13 @@ import { DialogsService } from './services/dialogs-service';
 export class Application {
   public static instance = new Application();
 
-  public sessions: SessionsService;
+  public sessions!: SessionsService;
 
-  public settings: Settings;
+  public settings!: Settings;
 
-  public storage: StorageService;
+  public storage!: StorageService;
 
-  public windows: WindowsService;
+  public windows!: WindowsService;
 
   public dialogs = new DialogsService();
 
@@ -42,6 +42,7 @@ export class Application {
           active: true,
         });
         this.windows.current.win.webContents.once('dom-ready', () => {
+          if (!this.windows.current) return;
           this.windows.current.viewManager.create({
             url: url,
             active: true,
@@ -68,6 +69,7 @@ export class Application {
                 active: true,
               });
               this.windows.current.win.webContents.once('dom-ready', () => {
+                if (!this.windows.current) return;
                 this.windows.current.viewManager.create({
                   url: `file:///${path}`,
                   active: true,
@@ -87,6 +89,7 @@ export class Application {
             active: true,
           });
           this.windows.current.win.webContents.once('dom-ready', () => {
+            if (!this.windows.current) return;
             this.windows.current.viewManager.create({
               url: prefixHttp(path),
               active: true,

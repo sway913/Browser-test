@@ -1,4 +1,3 @@
-/* Copyright (c) 2021-2024 Damon Smith */
 
 export interface ITheme {
   'titlebar.backgroundColor': string;
@@ -21,9 +20,6 @@ export interface ITheme {
   'dialog.backgroundColor': string;
   'dialog.textColor': string;
   'dialog.lightForeground': boolean;
-
-  'searchBox.backgroundColor': string;
-  'searchBox.lightForeground': boolean;
 
   'pages.backgroundColor': string;
   'pages.lightForeground': boolean;

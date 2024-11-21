@@ -40,25 +40,10 @@ export class View {
 
   public bounds: any;
 
-  public lastHistoryId: string;
-
   public findInfo = {
     occurrences: '0/0',
     text: '',
   };
-
-  public requestedAuth: IAuthInfo;
-  public requestedPermission: {
-    name: string;
-    url: string;
-    details: {
-      isMainFrame: boolean;
-      requestingUrl: string;
-      [key: string]: any;
-    };
-  };
-
-  private historyQueue = new Queue();
 
   private lastUrl = '';
 
@@ -105,12 +90,6 @@ export class View {
 
     });
 
-    this.webContents.addListener('found-in-page', (e, result) => {
-      Application.instance.dialogs
-        .getDynamic('find')
-        .webContentsView.webContents.send('found-in-page', result);
-    });
-
     this.webContents.addListener('page-title-updated', async (e, title) => {
       this.window.updateTitle();
       await this.updateData();
@@ -122,7 +101,6 @@ export class View {
     this.webContents.addListener('did-navigate', async (e, url) => {
       this.webContentsView.setBackgroundColor('#FFFFFFFF');
       this.emitEvent('did-navigate', url);
-      await this.addHistoryItem(url);
       await this.updateURL(url);
     });
 
@@ -140,7 +118,6 @@ export class View {
           );
           this.emitEvent('did-navigate', url);
 
-          await this.addHistoryItem(url, true);
           await this.updateURL(url);
         }
       },
@@ -220,44 +197,7 @@ export class View {
         console.error('Favicon array was empty.');
         this.favicon = 'default_favicon_url'; // Set a default favicon URL
       }
-
       await this.updateData();
-
-      await this.updateFavicon();
-    });
-
-    this.updateFavicon = async () => {
-      try {
-        let faviconUrl = this.favicon;
-
-        if (faviconUrl.startsWith('http')) {
-          faviconUrl = await Application.instance.storage.addFavicon(faviconUrl);
-        }
-
-        this.emitEvent('favicon-updated', faviconUrl);
-      } catch (error) {
-        this.favicon = 'default_favicon_url'; // Fallback to default favicon on error
-        console.error('Error updating favicon:', error);
-      }
-    };
-
-    this.webContents.addListener('zoom-changed', (e, zoomDirection) => {
-      const newZoomFactor =
-        this.webContents.zoomFactor +
-        (zoomDirection === 'in'
-          ? ZOOM_FACTOR_INCREMENT
-          : -ZOOM_FACTOR_INCREMENT);
-
-      if (
-        newZoomFactor <= ZOOM_FACTOR_MAX &&
-        newZoomFactor >= ZOOM_FACTOR_MIN
-      ) {
-        this.webContents.zoomFactor = newZoomFactor;
-        this.emitEvent('zoom-updated', this.webContents.zoomFactor);
-        window.viewManager.emitZoomUpdate();
-      } else {
-        e.preventDefault();
-      }
     });
 
     this.webContents.addListener('media-started-playing', () => {
@@ -305,7 +245,7 @@ export class View {
 
   public destroy() {
     (this.webContentsView.webContents as any).destroy();
-    this.webContentsView = null;
+    // this.webContentsView = null;
   }
 
   public async updateCredentials() {
@@ -323,12 +263,6 @@ export class View {
     });
 
     this.emitEvent('credentials', item != null);
-  }
-
-  public async addHistoryItem(url: string, inPage = false) {
-    await this.historyQueue.enqueue(async () => {
-      this.lastHistoryId = '';
-    });
   }
 
   public updateURL = async (url: string) => {

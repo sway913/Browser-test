@@ -21,7 +21,7 @@ interface IRectangle {
 }
 
 export class PersistentDialog {
-  public browserWindow: BrowserWindow;
+  public browserWindow!: BrowserWindow;
   public webContentsView: WebContentsView;
 
   public visible = false;
@@ -36,7 +36,7 @@ export class PersistentDialog {
   public name: string;
 
   private timeout: any;
-  private readonly hideTimeout: number;
+  private readonly hideTimeout: number = 0;
 
   private loaded = false;
   private showCallback: any = null;
@@ -53,7 +53,10 @@ export class PersistentDialog {
     });
 
     this.bounds = { ...this.bounds, ...bounds };
-    this.hideTimeout = hideTimeout;
+    if (hideTimeout) {
+      this.hideTimeout = hideTimeout;
+    }
+    
     this.name = name;
 
     const { webContents } = this.webContentsView;
@@ -71,17 +74,15 @@ export class PersistentDialog {
       }
     });
 
-    (async () => {
-      if (process.env.NODE_ENV === 'development') {
-        await this.webContents.loadURL(
-          `http://localhost:4444/${this.name}.html`,
-        );
-      } else {
-        await this.webContents.loadURL(
-          join('file://', app.getAppPath(), `build/${this.name}.html`),
-        );
-      }
-    })();
+    this.loadURL();
+  }
+
+  private async loadURL() {
+    if (process.env.NODE_ENV === 'development') {
+      await this.webContents.loadURL(`http://localhost:4444/${this.name}.html`);
+    } else {
+      await this.webContents.loadURL(join('file://', app.getAppPath(), `build/${this.name}.html`));
+    }
   }
 
   public get webContents() {
@@ -191,7 +192,7 @@ export class PersistentDialog {
     if (this.browserWindow && this.webContentsView) {
       this.browserWindow.contentView.removeChildView(this.webContentsView);
 
-      this.webContentsView = null;
+      // this.webContentsView = undefined;
     }
   }
 }

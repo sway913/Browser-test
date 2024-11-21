@@ -58,32 +58,6 @@ export class ViewManager extends EventEmitter {
             this.create(details)
         })
 
-        ipcMain.on("save-as-menu-extra", async (e) => {
-            const { title, webContents } =
-                Application.instance.windows.current.viewManager.selected
-
-            const { canceled, filePath } = await dialog.showSaveDialog({
-                defaultPath: title,
-                filters: [
-                    { name: "Webpage, Complete", extensions: ["html", "htm"] },
-                    { name: "Webpage, HTML Only", extensions: ["htm", "html"] }
-                ]
-            })
-
-            if (canceled) return
-
-            const ext = extname(filePath)
-
-            await webContents.savePage(
-                filePath,
-                ext === ".htm" ? "HTMLOnly" : "HTMLComplete"
-            )
-        })
-
-        ipcMain.on("Print", () => {
-            this.selected.webContents.print()
-        })
-
         ipcMain.handle(
             `view-select-${id}`,
             async (e, id: number, focus: boolean) => {
@@ -91,82 +65,26 @@ export class ViewManager extends EventEmitter {
             }
         )
 
-        ipcMain.removeHandler("get-tab-zoom")
-        ipcMain.handle("get-tab-zoom", (e: any, tabId: number) => {
-            // const zoom = this.findByContentView(tabId).viewManager.views.get(tabId)
-            //  .webContents.zoomFactor;
-            return this.selected.webContents.zoomFactor
-        })
-
         ipcMain.on(`view-destroy-${id}`, (e, id: number) => {
             this.destroy(id)
         })
 
         ipcMain.on(`mute-view-${id}`, (e, tabId: number) => {
-            const view = this.views.get(tabId)
-            view.webContents.setAudioMuted(true)
+            const view = this.views.get(tabId);
+            if (view) {
+                view.webContents.setAudioMuted(true)
+            }
         })
 
         ipcMain.on(`unmute-view-${id}`, (e, tabId: number) => {
-            const view = this.views.get(tabId)
-            view.webContents.setAudioMuted(false)
+            const view = this.views.get(tabId);
+            if (view) {
+                view.webContents.setAudioMuted(false);
+            }
         })
 
         ipcMain.on(`web-contents-view-clear-${id}`, () => {
             this.clear()
-        })
-
-        ipcMain.on("change-zoom", (e, zoomDirection) => {
-            const newZoomFactor =
-                this.selected.webContents.zoomFactor +
-                (zoomDirection === "in"
-                    ? ZOOM_FACTOR_INCREMENT
-                    : -ZOOM_FACTOR_INCREMENT)
-
-            if (
-                newZoomFactor <= ZOOM_FACTOR_MAX &&
-                newZoomFactor >= ZOOM_FACTOR_MIN
-            ) {
-                this.selected.webContents.zoomFactor = newZoomFactor
-                this.selected.emitEvent(
-                    "zoom-updated",
-                    this.selected.webContents.zoomFactor
-                )
-            } else {
-                e.preventDefault()
-            }
-            this.emitZoomUpdate()
-        })
-
-        ipcMain.on("change-zoom-menu", (e, zoomDirection) => {
-            const newZoomFactor =
-                this.selected.webContents.zoomFactor +
-                (zoomDirection === "in"
-                    ? ZOOM_FACTOR_INCREMENT
-                    : -ZOOM_FACTOR_INCREMENT)
-
-            if (
-                newZoomFactor <= ZOOM_FACTOR_MAX &&
-                newZoomFactor >= ZOOM_FACTOR_MIN
-            ) {
-                this.selected.webContents.zoomFactor = newZoomFactor
-                this.selected.emitEvent(
-                    "zoom-updated",
-                    this.selected.webContents.zoomFactor
-                )
-            } else {
-                e.preventDefault()
-            }
-            this.emitZoomUpdate(false)
-        })
-
-        ipcMain.on("reset-zoom", (e) => {
-            this.selected.webContents.zoomFactor = 1
-            this.selected.emitEvent(
-                "zoom-updated",
-                this.selected.webContents.zoomFactor
-            )
-            this.emitZoomUpdate()
         })
 
         this.setBoundsListener()
@@ -187,7 +105,7 @@ export class ViewManager extends EventEmitter {
         isNext = false,
         sendMessage = true
     ) {
-        const view = new View(this.window, details.url, this.incognito)
+        const view = new View(this.window, details.url!, this.incognito)
 
         const { webContents } = view.webContentsView
         const { id } = view
@@ -205,7 +123,7 @@ export class ViewManager extends EventEmitter {
     }
 
     public clear() {
-        this.window.win.setContentView(null)
+        // this.window.win.setContentView(null)
         Object.values(this.views).forEach((x) => x.destroy())
     }
 
@@ -241,28 +159,6 @@ export class ViewManager extends EventEmitter {
         view.updateNavigationState()
 
         this.emit("activated", id)
-    }
-
-    public changeZoom(zoomDirection: "in" | "out", e?: any) {
-        const newZoomFactor =
-            this.selected.webContents.zoomFactor +
-            (zoomDirection === "in"
-                ? ZOOM_FACTOR_INCREMENT
-                : -ZOOM_FACTOR_INCREMENT)
-
-        if (
-            newZoomFactor <= ZOOM_FACTOR_MAX &&
-            newZoomFactor >= ZOOM_FACTOR_MIN
-        ) {
-            this.selected.webContents.zoomFactor = newZoomFactor
-            this.selected.emitEvent(
-                "zoom-updated",
-                this.selected.webContents.zoomFactor
-            )
-        } else {
-            e?.preventDefault()
-        }
-        this.emitZoomUpdate()
     }
 
     public async fixBounds() {
@@ -319,20 +215,5 @@ export class ViewManager extends EventEmitter {
             view.destroy()
             this.emit("removed", id)
         }
-    }
-
-    public emitZoomUpdate(showDialog = true) {
-        Application.instance.dialogs
-            .getDynamic("zoom")
-            ?.webContentsView?.webContents?.send(
-                "zoom-factor-updated",
-                this.selected.webContents.zoomFactor
-            )
-
-        this.window.webContents.send(
-            "zoom-factor-updated",
-            this.selected.webContents.zoomFactor,
-            showDialog
-        )
     }
 }

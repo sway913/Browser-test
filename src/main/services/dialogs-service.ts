@@ -103,8 +103,8 @@ export class DialogsService {
             Application.instance.windows.fromBrowserWindow(browserWindow)
 
         if (foundDialog && tabAssociation) {
-            foundDialog.tabIds.push(tabAssociation.tabId)
-            foundDialog._sendTabInfo(tabAssociation.tabId)
+            // foundDialog.tabIds.push(tabAssociation.tabId)
+            // foundDialog._sendTabInfo(tabAssociation.tabId)
         }
 
         browserWindow.webContents.send("dialog-visibility-change", name, true)
@@ -114,7 +114,7 @@ export class DialogsService {
         if (foundDialog) {
             browserWindow.contentView.addChildView(webContentsView)
             foundDialog.rearrange()
-            return null
+            // return null
         }
 
         browserWindow.contentView.addChildView(webContentsView)
@@ -140,64 +140,11 @@ export class DialogsService {
             webContentsView,
             id: webContentsView.webContents.id,
             name,
-            tabIds: [tabAssociation?.tabId],
+            tabIds: [0],
             _sendTabInfo: (tabId) => {
-                if (tabAssociation.getTabInfo) {
-                    const data = tabAssociation.getTabInfo(tabId)
-                    webContentsView.webContents.send(
-                        "update-tab-info",
-                        tabId,
-                        data
-                    )
-                }
+      
             },
             hide: (tabId) => {
-                const { selectedId } = appWindow.viewManager
-
-                dialog.tabIds = dialog.tabIds.filter(
-                    (x) => x !== (tabId || selectedId)
-                )
-
-                if (tabId && tabId !== selectedId) return
-
-                browserWindow.webContents.send(
-                    "dialog-visibility-change",
-                    name,
-                    false
-                )
-
-                browserWindow.contentView.removeChildView(webContentsView)
-
-                if (tabAssociation && dialog.tabIds.length > 0) return
-
-                ipcMain.removeAllListeners(
-                    `hide-${webContentsView.webContents.id}`
-                )
-                channels.forEach((x) => {
-                    ipcMain.removeHandler(x)
-                    ipcMain.removeAllListeners(x)
-                })
-
-                this.dialogs = this.dialogs.filter((x) => x.id !== dialog.id)
-
-                this.childViewDetails.set(webContentsView.webContents.id, false)
-
-                if (this.childViews.length > 1) {
-                    // this.childViewDetails.delete(WebContentsView.id);
-                    // webContentsView.destroy();
-                    // this.childViews.splice(1, 1);
-                } else {
-                    webContentsView.webContents.loadURL("about:blank")
-                }
-
-                if (tabAssociation) {
-                    appWindow.viewManager.off("activated", tabsEvents.activate)
-                    appWindow.viewManager.off("removed", tabsEvents.remove)
-                }
-
-                browserWindow.removeListener("resize", windowEvents.resize)
-                browserWindow.removeListener("move", windowEvents.move)
-
                 if (onHide) onHide(dialog)
             },
             handle: (name, cb) => {
@@ -247,12 +194,12 @@ export class DialogsService {
         }
 
         const emitWindowBoundsUpdate = (type: BoundsDisposition) => {
-            if (
-                tabAssociation &&
-                !dialog.tabIds.includes(appWindow.viewManager.selectedId)
-            ) {
-                onWindowBoundsUpdate(type)
-            }
+            // if (
+            //     tabAssociation &&
+            //     !dialog.tabIds.includes(appWindow!.viewManager.selectedId)
+            // ) {
+            //     onWindowBoundsUpdate(type)
+            // }
         }
 
         windowEvents.move = () => {
@@ -264,8 +211,8 @@ export class DialogsService {
         }
 
         if (tabAssociation) {
-            appWindow.viewManager.on("removed", tabsEvents.remove)
-            appWindow.viewManager.on("activated", tabsEvents.activate)
+            appWindow!.viewManager.on("removed", tabsEvents.remove)
+            appWindow!.viewManager.on("activated", tabsEvents.activate)
         }
 
         if (onWindowBoundsUpdate) {
@@ -291,18 +238,6 @@ export class DialogsService {
         ipcMain.on(`hide-${webContentsView.webContents.id}`, () => {
             dialog.hide()
         })
-
-        if (tabAssociation) {
-            dialog.on("loaded", () => {
-                dialog._sendTabInfo(tabAssociation.tabId)
-            })
-
-            if (tabAssociation.setTabInfo) {
-                dialog.on("update-tab-info", (e, tabId, ...args) => {
-                    tabAssociation.setTabInfo(tabId, ...args)
-                })
-            }
-        }
 
         this.dialogs.push(dialog)
 

@@ -41,7 +41,7 @@ export class SessionsService {
           webContents.id,
         );
 
-        if (webContents.id !== window.viewManager.selectedId) return;
+        if (webContents.id !== window!.viewManager.selectedId) return;
 
         if (permission === 'fullscreen') {
           callback(true);
@@ -86,24 +86,9 @@ export class SessionsService {
     });
   }
 
-  public unloadIncognitoExtensions() {
-
-  }
-
-  // Loading extensions in an off the record BrowserContext is not supported.
-  public async loadExtensions() {
-    if (!process.env.ENABLE_EXTENSIONS) return;
-  }
-
-  async uninstallExtension(id: string) {
-
-  }
-
   public onCreateTab = async (details: TabCreateProperties) => {
-    const view = Application.instance.windows.list
-      .find((x) => x.win.id === details.windowId)
-      .viewManager.create(details, false, true);
-
+    const window = Application.instance.windows.list.find((x) => x.win.id === details.windowId)!;
+    const view = window.viewManager.create(details, false, true);
     return view.id;
   };
 }

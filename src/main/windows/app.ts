@@ -11,7 +11,7 @@ import { isNightly } from '..';
 import { ViewManager } from '../view-manager';
 
 export class AppWindow {
-  public win: BrowserWindow;
+  public win!: BrowserWindow;
 
   public viewManager: ViewManager;
 
@@ -118,29 +118,12 @@ export class AppWindow {
     this.win.on('unmaximize', resize);
 
     this.win.on('close', async (event: Electron.Event) => {
-      const { object: settings } = Application.instance.settings;
-
-      if (settings.warnOnQuit && this.viewManager.views.size > 1) {
-        const answer = dialog.showMessageBoxSync(null, {
-          type: 'question',
-          title: `Quit ${app.name}?`,
-          message: `Quit ${app.name}?`,
-          detail: `You have ${this.viewManager.views.size} tabs open.`,
-          buttons: ['Close', 'Cancel'],
-        });
-
-        if (answer === 1) {
-          event.preventDefault();
-          return;
-        }
-      }
-
       // Save current window state to a file.
       windowState.maximized = this.win.isMaximized();
       windowState.fullscreen = this.win.isFullScreen();
       writeFileSync(windowDataPath, JSON.stringify(windowState));
 
-      this.win.setContentView(null);
+      // this.win.setContentView(null);
 
       this.viewManager.clear();
 
@@ -154,7 +137,6 @@ export class AppWindow {
           1
       ) {
         Application.instance.sessions.clearCache('incognito');
-        Application.instance.sessions.unloadIncognitoExtensions();
       }
 
       Application.instance.windows.list =

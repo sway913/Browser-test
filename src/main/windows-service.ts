@@ -7,9 +7,9 @@ import { SessionsService } from './sessions-service';
 export class WindowsService {
   public list: AppWindow[] = [];
 
-  public current: AppWindow;
+  public current: AppWindow | undefined;
 
-  public lastFocused: AppWindow;
+  public lastFocused!: AppWindow;
 
   constructor(sessions: SessionsService) {
 

@@ -43,7 +43,7 @@ export const registerProtocol = (session: Electron.Session) => {
           });
         }
 
-        callback({ path: join(__dirname, parsed.path) });
+        // callback({ path: join(__dirname, parsed.path) });
       },
     );
   }
