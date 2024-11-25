@@ -1,6 +1,5 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
-import { ipcRenderer } from 'electron';
 
 import store from '../../store';
 import { Tabbar } from '../Tabbar';
@@ -8,13 +7,13 @@ import { platform } from 'os';
 import { WindowsControls } from 'react-windows-controls';
 import { StyledTitlebar, FullscreenExitButton } from './style';
 
-const onCloseClick = () => ipcRenderer.send(`window-close-${store.windowId}`);
+const onCloseClick = () => window.ipcRenderer.send(`window-close-${store.windowId}`);
 
 const onMaximizeClick = () =>
-  ipcRenderer.send(`window-toggle-maximize-${store.windowId}`);
+  window.ipcRenderer.send(`window-toggle-maximize-${store.windowId}`);
 
 const onMinimizeClick = () =>
-  ipcRenderer.send(`window-minimize-${store.windowId}`);
+  window.ipcRenderer.send(`window-minimize-${store.windowId}`);
 
 const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
 

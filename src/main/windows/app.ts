@@ -151,7 +151,7 @@ export class AppWindow {
 
     (async () => {
       if (process.env.NODE_ENV === 'development') {
-        this.webContents.openDevTools({ mode: 'detach' });
+
         await this.win.loadURL('http://localhost:4444/app.html');
       } else {
         await this.win.loadURL(
@@ -159,6 +159,8 @@ export class AppWindow {
         );
       }
     })();
+
+    this.webContents.openDevTools({ mode: 'detach' });
 
     this.win.on('enter-full-screen', async () => {
       this.send('fullscreen', true);
