@@ -1,7 +1,5 @@
 import styled, { css } from 'styled-components';
 
-import { ITheme } from '~/interfaces';
-
 export const Line = styled.div`
   height: 1px;
   width: 100%;

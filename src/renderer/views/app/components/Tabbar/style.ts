@@ -1,11 +1,7 @@
 import styled, { css } from 'styled-components';
-import { ToolbarButton } from '../ToolbarButton';
 import {
   TOOLBAR_BUTTON_WIDTH,
-  ADD_TAB_BUTTON_WIDTH,
-  ADD_TAB_BUTTON_HEIGHT,
 } from '~/constants/design';
-import { ITheme } from '~/interfaces';
 
 export const StyledTabbar = styled.div`
   height: 100%;
@@ -32,15 +28,4 @@ export const TabsContainer = styled.div`
     background-color: transparent;
     opacity: 0;
   }
-`;
-
-export const AddTab = styled(ToolbarButton)`
-  position: absolute;
-  left: 0;
-  min-width: ${ADD_TAB_BUTTON_WIDTH}px;
-  height: ${ADD_TAB_BUTTON_HEIGHT}px;
-
-  ${({ theme }: { theme: ITheme }) => css`
-    top: ${theme.isCompact ? 'auto' : theme.tabMarginTop + 2}px;
-  `};
 `;

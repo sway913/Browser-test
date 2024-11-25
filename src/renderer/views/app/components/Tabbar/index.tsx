@@ -1,11 +1,10 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 
-import { AddTab, StyledTabbar, TabsContainer } from './style';
+import { StyledTabbar, TabsContainer } from './style';
 import { Tabs } from '../Tabs';
 import store from '../../store';
 import { TabGroup } from '../TabGroup';
-import { ICON_ADD } from '~/renderer/constants/icons';
 
 let timeout: any;
 
@@ -60,11 +59,6 @@ export const Tabbar = observer(() => {
         <TabGroups />
         <Tabs />
       </TabsContainer>
-      <AddTab
-        icon={ICON_ADD}
-        onClick={onAddTabClick}
-        divRef={(r: any) => (store.addTab.ref = r)}
-      />
     </StyledTabbar>
   );
 });

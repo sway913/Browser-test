@@ -20,17 +20,11 @@ const onMouseDown = (e: React.MouseEvent<HTMLDivElement>) => {
 
 };
 
-// currently in the process of fixing fullscreen as it dosent work at all
-const onFullscreenExit = (e: React.MouseEvent<HTMLDivElement>) => {
-  // require('@electron/remote/main').getCurrentWindow().setFullScreen(true);
-};
 
 export const Titlebar = observer(() => {
   return (
     <StyledTitlebar
       onMouseDown={onMouseDown}
-      isFullscreen={store.isFullscreen}
-      isHTMLFullscreen={store.isHTMLFullscreen}
     >
       <Tabbar />
       {platform() !== 'darwin' &&
@@ -39,7 +33,6 @@ export const Titlebar = observer(() => {
             style={{
               height: store.isCompact ? '100%' : 32,
             }}
-            onMouseUp={onFullscreenExit}
             theme={store.theme}
           />
         ) : (
