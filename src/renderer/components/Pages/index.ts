@@ -27,15 +27,3 @@ export const Container = styled.div`
     transition: 0.2s opacity;
   }
 `;
-
-export const Content = styled.div`
-  height: 100vh;
-  flex: 1;
-  overflow: auto;
-`;
-
-export const LeftContent = styled.div`
-  position: relative;
-  margin: 64px;
-  max-width: 1024px;
-`;

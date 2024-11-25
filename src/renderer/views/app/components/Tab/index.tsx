@@ -1,7 +1,6 @@
 import { observer } from 'mobx-react-lite';
 import * as React from 'react';
 
-import { Preloader } from '~/renderer/components/Preloader';
 import {
   StyledTab,
   StyledContent,
@@ -106,15 +105,6 @@ const Content = observer(({ tab }: { tab: ITab }) => {
         </StyledIcon>
       )}
 
-      {tab.loading && (
-        <Preloader
-          color={store.theme.accentColor}
-          thickness={6}
-          size={16}
-          indeterminate
-          style={{ minWidth: 16 }}
-        />
-      )}
       {!tab.isPinned && (
         <StyledTitle isIcon={tab.isIconSet} selected={tab.isSelected}>
           {tab.isSelected && store.isCompact ? tab.url : tab.title}
