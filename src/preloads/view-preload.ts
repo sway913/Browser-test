@@ -154,40 +154,4 @@ if (window.location.href.startsWith(WEBUI_BASE_URL)) {
     }
   });
 
-  // Unused as of v1.0.0
-  // ipcRenderer.on('update-settings', async (e, data) => {
-  //   await webFrame.executeJavaScript(
-  //     `window.updateSettings(${JSON.stringify(data)})`,
-  //   );
-  // });
-
-  ipcRenderer.on('credentials-insert', (e, data) => {
-    window.postMessage(
-      {
-        type: 'credentials-insert',
-        data,
-      },
-      '*',
-    );
-  });
-
-  ipcRenderer.on('credentials-update', (e, data) => {
-    window.postMessage(
-      {
-        type: 'credentials-update',
-        data,
-      },
-      '*',
-    );
-  });
-
-  ipcRenderer.on('credentials-remove', (e, data) => {
-    window.postMessage(
-      {
-        type: 'credentials-remove',
-        data,
-      },
-      '*',
-    );
-  });
 }
