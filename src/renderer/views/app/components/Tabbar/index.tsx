@@ -19,10 +19,6 @@ const onTabsMouseLeave = () => {
   }, 300);
 };
 
-const onAddTabClick = () => {
-  store.tabs.addTab();
-};
-
 const onWheel = (e: any) => {
   if (!store.tabs.containerRef) return;
 
