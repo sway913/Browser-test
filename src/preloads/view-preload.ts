@@ -1,6 +1,6 @@
 /* Copyright (c) 2021-2024 Damon Smith */
 
-import { app, ipcRenderer, webFrame } from 'electron';
+import { app, ipcRenderer } from 'electron';
 import { getTheme } from '~/utils/themes';
 import { ERROR_PROTOCOL, WEBUI_BASE_URL } from '~/constants/files';
 import { contextBridge } from 'electron';

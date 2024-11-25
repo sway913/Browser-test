@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { DialogStore } from '~/models/dialog-store';
 
 export class Store extends DialogStore {
