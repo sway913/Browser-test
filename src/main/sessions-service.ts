@@ -6,19 +6,6 @@ import { registerProtocol } from './models/protocol';
 import { TabCreateProperties } from "~/interfaces/tabs"
 import { URL } from 'url';
 
-const rimraf = require('rimraf');
-
-const rf = (path: string): Promise<void> => {
-  return new Promise((resolve, reject) => {
-    rimraf(path, (err: Error | null) => {
-      if (err) {
-        reject(err);
-      } else {
-        resolve(undefined);
-      }
-    });
-  });
-};
 
 export class SessionsService {
   public view = session.fromPartition('persist:view');

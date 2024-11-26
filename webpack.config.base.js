@@ -96,7 +96,6 @@ const config = {
 
     externals: {
         keytar: `require('keytar')`,
-        electron: 'require("electron")',
         fs: 'require("fs")',
         os: 'require("os")',
         path: 'require("path")'

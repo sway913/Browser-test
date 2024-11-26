@@ -21,7 +21,6 @@ import {
   DEEP_ORANGE_500,
   BLUE_GRAY_500,
 } from '~/renderer/constants';
-import { ipcRenderer } from 'electron';
 
 export class TabGroupsStore {
   public list: ITabGroup[] = [];
@@ -53,7 +52,7 @@ export class TabGroupsStore {
 
     this.store = store;
 
-    ipcRenderer.on('edit-tabgroup', (e, t) => {
+    window.ipcRenderer.on('edit-tabgroup', (e, t) => {
       if (t) {
         const group = this.getGroupById(t.id);
         if (t.name != null) group.name = t.name;

@@ -1,17 +1,15 @@
-const { ipcRenderer } = require("electron")
-
-export const getCurrentWindowId: number = ipcRenderer.sendSync('get-current-window-id');
+export const getCurrentWindowId: number = window.ipcRenderer.sendSync('get-current-window-id');
 
 console.log('getCurrentWindowId:' + getCurrentWindowId);
 
 export const closeWindow = () => {
-  ipcRenderer.send('close');
+  window.ipcRenderer.send('close');
 }
 
 export const minimizeWindow = () => {
-  ipcRenderer.send('unmaximize');
+  window.ipcRenderer.send('unmaximize');
 }
 
 export const maximizeWindow = () => {
-  ipcRenderer.send('maximize');
+  window.ipcRenderer.send('maximize');
 }

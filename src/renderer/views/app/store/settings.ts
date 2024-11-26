@@ -1,8 +1,6 @@
 /* Copyright (c) 2021-2024 Damon Smith */
 
 import { observable, action, computed, makeObservable } from 'mobx';
-import { ipcRenderer } from 'electron';
-
 import { ISettings } from '~/interfaces';
 import { DEFAULT_SETTINGS } from '~/constants';
 import { Store } from '.';
@@ -28,9 +26,9 @@ export class SettingsStore {
 
     let firstTime = false;
 
-    ipcRenderer.send('get-settings');
+    window.ipcRenderer.send('get-settings');
 
-    ipcRenderer.on('update-settings', (e, settings: ISettings) => {
+    window.ipcRenderer.on('update-settings', (e, settings: ISettings) => {
       this.updateSettings(settings);
 
       if (!firstTime) {
@@ -52,7 +50,7 @@ export class SettingsStore {
   }
 
   public async save() {
-    ipcRenderer.send('save-settings', {
+    window.ipcRenderer.send('save-settings', {
       settings: JSON.stringify(this.object),
     });
   }

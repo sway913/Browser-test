@@ -15,7 +15,6 @@ import {
 } from '../constants';
 
 import store from '.';
-import { ipcRenderer } from 'electron';
 import { defaultTabOptions } from '~/constants/tabs';
 import { TOOLBAR_HEIGHT } from '~/constants/design';
 import { TabEvent, TabCreateProperties } from '~/interfaces/tabs';
@@ -69,11 +68,11 @@ export class TabsStore {
     window.addEventListener('mousemove', this.onMouseMove);
     window.addEventListener('resize', this.onResize);
 
-    ipcRenderer.on('tabs-resize', () => {
+    window.ipcRenderer.on('tabs-resize', () => {
       this.updateTabsBounds(true);
     });
 
-    ipcRenderer.on(
+    window.ipcRenderer.on(
       'create-tab',
       (
         e,
@@ -90,7 +89,7 @@ export class TabsStore {
       },
     );
 
-    ipcRenderer.on('select-next-tab', () => {
+    window.ipcRenderer.on('select-next-tab', () => {
       const i = this.list.indexOf(this.selectedTab);
       const nextTab = this.list[i + 1];
 
@@ -103,15 +102,15 @@ export class TabsStore {
       }
     });
 
-    ipcRenderer.on('select-tab-index', (e, i) => {
+    window.ipcRenderer.on('select-tab-index', (e, i) => {
       this.list[i]?.select();
     });
 
-    ipcRenderer.on('select-last-tab', () => {
+    window.ipcRenderer.on('select-last-tab', () => {
       this.list[this.list.length - 1]?.select();
     });
 
-    ipcRenderer.on('select-previous-tab', () => {
+    window.ipcRenderer.on('select-previous-tab', () => {
       const i = this.list.indexOf(this.selectedTab);
       const prevTab = this.list[i - 1];
 
@@ -124,11 +123,11 @@ export class TabsStore {
       }
     });
 
-    ipcRenderer.on('remove-tab', (e, id: number) => {
+    window.ipcRenderer.on('remove-tab', (e, id: number) => {
       this.getTabById(id)?.close();
     });
 
-    ipcRenderer.on('tab-event', (e, event: TabEvent, tabId, args) => {
+    window.ipcRenderer.on('tab-event', (e, event: TabEvent, tabId, args) => {
       const tab = this.getTabById(tabId);
 
       if (tab) {
@@ -156,12 +155,12 @@ export class TabsStore {
       }
     });
 
-    ipcRenderer.on('revert-closed-tab', () => {
+    window.ipcRenderer.on('revert-closed-tab', () => {
       this.revertClosed();
     });
 
-    ipcRenderer.on('get-search-tabs', () => {
-      ipcRenderer.send(
+    window.ipcRenderer.on('get-search-tabs', () => {
+      window.ipcRenderer.send(
         'get-search-tabs',
         this.list.map((tab) => ({
           favicon: tab.favicon,
@@ -267,11 +266,11 @@ export class TabsStore {
     options = defaultTabOptions,
     tabGroupId: number = undefined,
   ) {
-    ipcRenderer.send(`hide-window-${store.windowId}`);
+    window.ipcRenderer.send(`hide-window-${store.windowId}`);
 
     const opts = { ...defaultTabOptions, ...options };
 
-    const id: number = await ipcRenderer.invoke(
+    const id: number = await window.ipcRenderer.invoke(
       `view-create-${store.windowId}`,
       opts,
     );
@@ -280,7 +279,7 @@ export class TabsStore {
 
   @action
   public async addTabs(options: TabCreateProperties[]) {
-    ipcRenderer.send(`hide-window-${store.windowId}`);
+    window.ipcRenderer.send(`hide-window-${store.windowId}`);
 
     for (let i = 0; i < options.length; i++) {
       if (i === options.length - 1) {
@@ -290,7 +289,7 @@ export class TabsStore {
       }
     }
 
-    const ids = await ipcRenderer.invoke(
+    const ids = await window.ipcRenderer.invoke(
       `views-create-${store.windowId}`,
       options,
     );
@@ -332,13 +331,13 @@ export class TabsStore {
 
   @action
   public muteTab(tab: ITab) {
-    ipcRenderer.send(`mute-view-${store.windowId}`, tab.id);
+    window.ipcRenderer.send(`mute-view-${store.windowId}`, tab.id);
     tab.isMuted = true;
   }
 
   @action
   public unmuteTab(tab: ITab) {
-    ipcRenderer.send(`unmute-view-${store.windowId}`, tab.id);
+    window.ipcRenderer.send(`unmute-view-${store.windowId}`, tab.id);
     tab.isMuted = false;
   }
 

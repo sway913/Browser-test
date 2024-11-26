@@ -4,7 +4,6 @@ import { ThemeProvider } from 'styled-components';
 
 import { StyledApp, Colors, Color } from './style';
 import store from '../../store';
-import { ipcRenderer } from 'electron';
 import {
   BLUE_500,
   RED_500,
@@ -25,15 +24,9 @@ import {
 } from '~/renderer/constants';
 import { UIStyle } from '~/renderer/mixins/default-styles';
 
-const onChange = (e: any) => {
-  ipcRenderer.send(`edit-tabgroup-${store.windowId}`, {
-    name: store.inputRef.current.value,
-    id: store.tabGroupId,
-  });
-};
 
 const onColorClick = (color: string) => () => {
-  ipcRenderer.send(`edit-tabgroup-${store.windowId}`, {
+  window.ipcRenderer.send(`edit-tabgroup-${store.windowId}`, {
     color,
     id: store.tabGroupId,
   });

@@ -27,10 +27,7 @@ export class AppWindow {
       titleBarStyle: 'hiddenInset',
       backgroundColor: '#ffffff',
       webPreferences: {
-        plugins: true,
-        // TODO: enable sandbox, contextIsolation and disable nodeIntegration to improve security
-        nodeIntegration: true,
-        contextIsolation: false,
+        preload: `${app.getAppPath()}/build/view-preload.bundle.js`,
         javascript: true,
       },
       trafficLightPosition: {

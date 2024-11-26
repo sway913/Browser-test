@@ -6,7 +6,6 @@ import { ERROR_PROTOCOL, WEBUI_BASE_URL } from "~/constants/files"
 import { contextBridge } from "electron"
 const tabId = ipcRenderer.sendSync("get-webcontents-id")
 
-// --------- Expose some API to the Renderer process ---------
 contextBridge.exposeInMainWorld("ipcRenderer", {
     on(...args: Parameters<typeof ipcRenderer.on>) {
         const [channel, listener] = args
@@ -22,13 +21,14 @@ contextBridge.exposeInMainWorld("ipcRenderer", {
         const [channel, ...omit] = args
         return ipcRenderer.send(channel, ...omit)
     },
+    sendSync(...args: Parameters<typeof ipcRenderer.send>) {
+        const [channel, ...omit] = args
+        return ipcRenderer.send(channel, ...omit)
+    },
     invoke(...args: Parameters<typeof ipcRenderer.invoke>) {
         const [channel, ...omit] = args
         return ipcRenderer.invoke(channel, ...omit)
     }
-
-    // You can expose other APTs you need here.
-    // ...
 })
 
 export const windowId: number = ipcRenderer.sendSync("get-window-id")
@@ -142,12 +142,6 @@ if (
     ;(async function () {
         contextBridge.exposeInMainWorld("process", process)
         contextBridge.exposeInMainWorld("settings", settings)
-        contextBridge.exposeInMainWorld("require", (id: string) => {
-            if (id === "electron") {
-                return { ipcRenderer, app }
-            }
-            return undefined
-        })
         if (window.location.pathname.startsWith("//network-error")) {
             contextBridge.exposeInMainWorld("theme", getTheme(settings.theme))
             contextBridge.exposeInMainWorld(
