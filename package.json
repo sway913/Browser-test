@@ -90,7 +90,7 @@
     "node-fetch": "^3.3.2",
     "node-parse-bookmarks": "^1.0.2",
     "parse-ico": "^1.0.2",
-    "prettier": "2.8.8",
+    "prettier": "3.4.1",
     "pretty-bytes": "6.1.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
